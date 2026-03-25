@@ -1,15 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор площади треугольника</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Выбери треугольник</h1>
-    <ul>
-        <li><a href="/triangle/right">Прямоугольный</a></li>
-        <li><a href="/triangle/isosceles">Равнобедренный</a></li>
-        <li><a href="/triangle/equilateral">Равносторонний</a></li>
-        <li><a href="/triangle/scalene">Произвольный</a></li>
-    </ul>
+    <div class="container">
+        <h1>📐 Калькулятор площади треугольника</h1>
+        <div class="grid">
+            <a href="/triangle/right" class="card">
+                <div style="font-size: 80px;">📐</div>
+                <h3>Прямоугольный</h3>
+                <p>Один угол 90°</p>
+            </a>
+            <a href="/triangle/isosceles" class="card">
+                <div style="font-size: 80px;">🔺</div>
+                <h3>Равнобедренный</h3>
+                <p>Две стороны равны</p>
+            </a>
+            <a href="/triangle/equilateral" class="card">
+                <div style="font-size: 80px;">▲</div>
+                <h3>Равносторонний</h3>
+                <p>Все стороны равны</p>
+            </a>
+            <a href="/triangle/scalene" class="card">
+                <div style="font-size: 80px;">📏</div>
+                <h3>Произвольный</h3>
+                <p>Все стороны разные</p>
+            </a>
+        </div>
+    </div>
 </body>
 </html>

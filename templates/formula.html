@@ -7,31 +7,28 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <script>
         function showInputs() {
-            const formula = document.querySelector('input[name="formula"]:checked').value;
+            const f = document.querySelector('input[name="formula"]:checked').value;
             document.getElementById('inputs1').style.display = 'none';
             document.getElementById('inputs2').style.display = 'none';
-            
-            if (formula === 'legs' || formula === 'base_height' || formula === 'base_height_scalene') {
+            if (f === 'legs' || f === 'base_height' || f === 'base_height_scalene')
                 document.getElementById('inputs1').style.display = 'block';
-            } else if (formula === 'hypotenuse' || formula === 'side_angle' || formula === 'heron') {
+            else if (f === 'hypotenuse' || f === 'side_angle' || f === 'heron')
                 document.getElementById('inputs2').style.display = 'block';
-            }
         }
     </script>
 </head>
 <body>
     <div class="container">
-        <h1>📐 Выбери формулу для {{ triangle_type }}</h1>
+        <h1>📐 Выбери формулу для {{ triangle_name }}</h1>
         <div class="form-container">
             <form action="/calculate" method="POST">
                 <input type="hidden" name="triangle_type" value="{{ triangle_type }}">
-                
+
                 {% if triangle_type == 'right' %}
                     <div class="radio-group">
                         <label><input type="radio" name="formula" value="legs" checked onclick="showInputs()"> По катетам (a, b)</label>
                         <label><input type="radio" name="formula" value="hypotenuse" onclick="showInputs()"> По гипотенузе и высоте (c, h)</label>
                     </div>
-                    
                     <div id="inputs1" class="form-group">
                         <input type="number" step="any" name="a" placeholder="катет a" required>
                         <input type="number" step="any" name="b" placeholder="катет b" required>
@@ -40,13 +37,12 @@
                         <input type="number" step="any" name="c" placeholder="гипотенуза c" required>
                         <input type="number" step="any" name="h" placeholder="высота h" required>
                     </div>
-                
+
                 {% elif triangle_type == 'isosceles' %}
                     <div class="radio-group">
                         <label><input type="radio" name="formula" value="base_height" checked onclick="showInputs()"> По основанию и высоте (b, h)</label>
                         <label><input type="radio" name="formula" value="side_angle" onclick="showInputs()"> По боковой стороне и углу (a, угол α)</label>
                     </div>
-                    
                     <div id="inputs1" class="form-group">
                         <input type="number" step="any" name="b" placeholder="основание b" required>
                         <input type="number" step="any" name="h" placeholder="высота h" required>
@@ -55,19 +51,18 @@
                         <input type="number" step="any" name="a" placeholder="боковая сторона a" required>
                         <input type="number" step="any" name="angle" placeholder="угол α (градусы)" required>
                     </div>
-                
+
                 {% elif triangle_type == 'equilateral' %}
                     <input type="hidden" name="formula" value="equilateral">
                     <div class="form-group">
                         <input type="number" step="any" name="a" placeholder="сторона a" required>
                     </div>
-                
+
                 {% elif triangle_type == 'scalene' %}
                     <div class="radio-group">
                         <label><input type="radio" name="formula" value="base_height_scalene" checked onclick="showInputs()"> По стороне и высоте (a, h)</label>
                         <label><input type="radio" name="formula" value="heron" onclick="showInputs()"> Формула Герона (по трём сторонам)</label>
                     </div>
-                    
                     <div id="inputs1" class="form-group">
                         <input type="number" step="any" name="a" placeholder="сторона a" required>
                         <input type="number" step="any" name="h" placeholder="высота h" required>
@@ -78,7 +73,7 @@
                         <input type="number" step="any" name="c" placeholder="сторона c" required>
                     </div>
                 {% endif %}
-                
+
                 <button type="submit">Рассчитать площадь</button>
             </form>
         </div>
