@@ -23,10 +23,12 @@ def calculate():
                 a = float(request.form.get('a'))
                 b = float(request.form.get('b'))
                 area = (a * b) / 2
-            else:  # hypotenuse
+                return render_template('result.html', area=f"{area:.2f}")
+            elif formula == 'hypotenuse':
                 c = float(request.form.get('c'))
                 h = float(request.form.get('h'))
                 area = (c * h) / 2
+                return render_template('result.html', area=f"{area:.2f}")
         
         # РАВНОБЕДРЕННЫЙ ТРЕУГОЛЬНИК
         elif triangle_type == 'isosceles':
@@ -34,33 +36,39 @@ def calculate():
                 b = float(request.form.get('b'))
                 h = float(request.form.get('h'))
                 area = (b * h) / 2
-            else:  # side_angle
+                return render_template('result.html', area=f"{area:.2f}")
+            elif formula == 'side_angle':
                 a = float(request.form.get('a'))
                 angle = float(request.form.get('angle'))
                 area = (a**2 * math.sin(math.radians(angle))) / 2
+                return render_template('result.html', area=f"{area:.2f}")
         
         # РАВНОСТОРОННИЙ ТРЕУГОЛЬНИК
         elif triangle_type == 'equilateral':
             a = float(request.form.get('a'))
             area = (a**2 * math.sqrt(3)) / 4
+            return render_template('result.html', area=f"{area:.2f}")
         
         # ПРОИЗВОЛЬНЫЙ ТРЕУГОЛЬНИК
         elif triangle_type == 'scalene':
-            if formula == 'base_height':
+            if formula == 'base_height_scalene':
                 a = float(request.form.get('a'))
                 h = float(request.form.get('h'))
                 area = (a * h) / 2
-            else:  # heron
+                return render_template('result.html', area=f"{area:.2f}")
+            elif formula == 'heron':
                 a = float(request.form.get('a'))
                 b = float(request.form.get('b'))
                 c = float(request.form.get('c'))
                 p = (a + b + c) / 2
                 area = math.sqrt(p * (p - a) * (p - b) * (p - c))
+                return render_template('result.html', area=f"{area:.2f}")
         
-        return render_template('result.html', area=f"{area:.2f}")
+        # Если ничего не подошло
+        return render_template('result.html', area="Ошибка: выберите формулу")
     
     except Exception as e:
-        return render_template('result.html', area=f"Ошибка: {e}")
+        return render_template('result.html', area=f"Ошибка: {str(e)}")
 
 if __name__ == '__main__':
     app.run(debug=True)
