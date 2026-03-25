@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Выбери формулу</title>
+</head>
+<body>
+    <h1>Выбери формулу для {{ triangle_type }}</h1>
+    <form action="/calculate" method="POST">
+        <input type="hidden" name="triangle_type" value="{{ triangle_type }}">
+        
+        <label><input type="radio" name="formula" value="base_height" checked> По стороне и высоте (a, h)</label><br>
+        <label><input type="radio" name="formula" value="heron"> Формула Герона (по трём сторонам)</label><br>
+        
+        <div id="base_height_inputs">
+            <input type="number" step="any" name="a" placeholder="сторона a" required>
+            <input type="number" step="any" name="h" placeholder="высота h" required>
+        </div>
+        <div id="heron_inputs" style="display:none">
+            <input type="number" step="any" name="a" placeholder="сторона a" required>
+            <input type="number" step="any" name="b" placeholder="сторона b" required>
+            <input type="number" step="any" name="c" placeholder="сторона c" required>
+        </div>
+        
+        <br><button type="submit">Рассчитать</button>
+    </form>
+    
+    <script>
+        const radios = document.querySelectorAll('input[name="formula"]');
+        const baseDiv = document.getElementById('base_height_inputs');
+        const heronDiv = document.getElementById('heron_inputs');
+        
+        function toggleInputs() {
+            const selected = document.querySelector('input[name="formula"]:checked').value;
+            if (selected === 'base_height') {
+                baseDiv.style.display = 'block';
+                heronDiv.style.display = 'none';
+            } else {
+                baseDiv.style.display = 'none';
+                heronDiv.style.display = 'block';
+            }
+        }
+        
+        radios.forEach(radio => radio.addEventListener('change', toggleInputs));
+        toggleInputs();
+    </script>
+</body>
+</html>
