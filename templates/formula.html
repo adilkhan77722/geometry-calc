@@ -2,46 +2,70 @@
 <html>
 <head>
     <title>Выбери формулу</title>
+    <script>
+        function showInputs() {
+            const formula = document.querySelector('input[name="formula"]:checked').value;
+            document.getElementById('inputs1').style.display = 'none';
+            document.getElementById('inputs2').style.display = 'none';
+            if (formula === 'legs' || formula === 'base_height' || formula === 'base_height_scalene') {
+                document.getElementById('inputs1').style.display = 'block';
+            } else if (formula === 'hypotenuse' || formula === 'side_angle' || formula === 'heron') {
+                document.getElementById('inputs2').style.display = 'block';
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Выбери формулу для {{ triangle_type }}</h1>
-    <form action="/calculate" method="POST">
+    <form action="/calculate" method="POST" onchange="showInputs()">
         <input type="hidden" name="triangle_type" value="{{ triangle_type }}">
         
-        <label><input type="radio" name="formula" value="base_height" checked> По стороне и высоте (a, h)</label><br>
-        <label><input type="radio" name="formula" value="heron"> Формула Герона (по трём сторонам)</label><br>
+        {% if triangle_type == 'right' %}
+            <label><input type="radio" name="formula" value="legs" checked onclick="showInputs()"> По катетам (a, b)</label><br>
+            <label><input type="radio" name="formula" value="hypotenuse" onclick="showInputs()"> По гипотенузе и высоте (c, h)</label><br>
+            
+            <div id="inputs1">
+                <input type="number" step="any" name="a" placeholder="катет a" required>
+                <input type="number" step="any" name="b" placeholder="катет b" required>
+            </div>
+            <div id="inputs2" style="display:none">
+                <input type="number" step="any" name="c" placeholder="гипотенуза c" required>
+                <input type="number" step="any" name="h" placeholder="высота h" required>
+            </div>
         
-        <div id="base_height_inputs">
+        {% elif triangle_type == 'isosceles' %}
+            <label><input type="radio" name="formula" value="base_height" checked onclick="showInputs()"> По основанию и высоте (b, h)</label><br>
+            <label><input type="radio" name="formula" value="side_angle" onclick="showInputs()"> По боковой стороне и углу (a, угол α)</label><br>
+            
+            <div id="inputs1">
+                <input type="number" step="any" name="b" placeholder="основание b" required>
+                <input type="number" step="any" name="h" placeholder="высота h" required>
+            </div>
+            <div id="inputs2" style="display:none">
+                <input type="number" step="any" name="a" placeholder="боковая сторона a" required>
+                <input type="number" step="any" name="angle" placeholder="угол α (градусы)" required>
+            </div>
+        
+        {% elif triangle_type == 'equilateral' %}
+            <input type="hidden" name="formula" value="equilateral">
             <input type="number" step="any" name="a" placeholder="сторона a" required>
-            <input type="number" step="any" name="h" placeholder="высота h" required>
-        </div>
-        <div id="heron_inputs" style="display:none">
-            <input type="number" step="any" name="a" placeholder="сторона a" required>
-            <input type="number" step="any" name="b" placeholder="сторона b" required>
-            <input type="number" step="any" name="c" placeholder="сторона c" required>
-        </div>
+        
+        {% elif triangle_type == 'scalene' %}
+            <label><input type="radio" name="formula" value="base_height_scalene" checked onclick="showInputs()"> По стороне и высоте (a, h)</label><br>
+            <label><input type="radio" name="formula" value="heron" onclick="showInputs()"> Формула Герона (по трём сторонам)</label><br>
+            
+            <div id="inputs1">
+                <input type="number" step="any" name="a" placeholder="сторона a" required>
+                <input type="number" step="any" name="h" placeholder="высота h" required>
+            </div>
+            <div id="inputs2" style="display:none">
+                <input type="number" step="any" name="a" placeholder="сторона a" required>
+                <input type="number" step="any" name="b" placeholder="сторона b" required>
+                <input type="number" step="any" name="c" placeholder="сторона c" required>
+            </div>
+        {% endif %}
         
         <br><button type="submit">Рассчитать</button>
     </form>
-    
-    <script>
-        const radios = document.querySelectorAll('input[name="formula"]');
-        const baseDiv = document.getElementById('base_height_inputs');
-        const heronDiv = document.getElementById('heron_inputs');
-        
-        function toggleInputs() {
-            const selected = document.querySelector('input[name="formula"]:checked').value;
-            if (selected === 'base_height') {
-                baseDiv.style.display = 'block';
-                heronDiv.style.display = 'none';
-            } else {
-                baseDiv.style.display = 'none';
-                heronDiv.style.display = 'block';
-            }
-        }
-        
-        radios.forEach(radio => radio.addEventListener('change', toggleInputs));
-        toggleInputs();
-    </script>
 </body>
 </html>
